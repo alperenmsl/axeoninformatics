@@ -1,161 +1,138 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-
 <body>
-    <div class="sidebar">
-        <h2><i data-lucide="terminal-square"></i> Admin</h2>
-        <ul>
-            <li onclick="showPage('dashboard')"><i data-lucide="layout-dashboard"></i> Dashboard</li>
-            <li onclick="showPage('orders')"><i data-lucide="shopping-cart"></i> Aufträge</li>
-            <li onclick="showPage('transactions')"><i data-lucide="credit-card"></i> Transaktionen</li>
-            <li onclick="logout()"><i data-lucide="log-out"></i> Logout</li>
-        </ul>
+  <div class="sidebar">
+    <h2><i data-lucide="terminal-square"></i> Admin</h2>
+    <ul>
+      <li onclick="showPage('dashboard')"><i data-lucide="layout-dashboard"></i> Dashboard</li>
+      <li onclick="showPage('orders')"><i data-lucide="shopping-cart"></i> Aufträge</li>
+      <li onclick="showPage('transactions')"><i data-lucide="credit-card"></i> Transaktionen</li>
+      <li onclick="logout()"><i data-lucide="log-out"></i> Logout</li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <div id="dashboard" class="page active">
+      <h1>📊 Dashboard</h1>
+      <div class="card">Systemstatus: <span class="status online">Online</span></div>
     </div>
 
-    <div class="main">
-        <div id="dashboard" class="page active">
-            <h1>📊 Dashboard</h1>
-            <div class="card">Systemstatus: <span class="status online">Online</span></div>
-        </div>
-
-        <div id="orders" class="page">
-            <h1>🛒 Aufträge</h1>
-            <div id="orderList" class="card">
-            </div>
-            <br>
-            <button id="addOrderButton" onclick="toggleAddOrderForm()" style="display:none;">Neuen Auftrag hinzufügen</button>
-
-            <div id="addOrderForm" style="display:none;">
-                <h3>Neuen Auftrag hinzufügen</h3>
-                <form id="orderForm">
-                    <label for="customerName">Kunde:</label>
-                    <input type="text" id="customerName" name="customerName" required>
-
-                    <label for="orderTitle">Auftragstitel:</label>
-                    <input type="text" id="orderTitle" name="orderTitle" required>
-
-                    <label for="orderStatus">Status:</label>
-                    <input type="text" id="orderStatus" name="orderStatus" required>
-
-                    <label for="deadline">Deadline:</label>
-                    <input type="date" id="deadline" name="deadline" required>
-
-                    <button type="submit">Auftrag speichern</button>
-                </form>
-            </div>
-
-        </div>
-
-        <div id="transactions" class="page">
-            <h1>💳 Transaktionen</h1>
-            <div class="card" id="transactionList">Noch keine Transaktionen.</div>
-        </div>
+    <div id="orders" class="page">
+      <h1>🛒 Aufträge</h1>
+      <div id="orderList" class="card"></div>
+      <br>
+      <button id="addOrderButton" onclick="toggleAddOrderForm()" style="display:none;">Neuen Auftrag hinzufügen</button>
+      <div id="addOrderForm" style="display:none;">
+        <h3>Neuen Auftrag hinzufügen</h3>
+        <form id="orderForm">
+          <label for="customerName">Kunde:</label>
+          <input type="text" id="customerName" name="customerName" required>
+          <label for="orderTitle">Auftragstitel:</label>
+          <input type="text" id="orderTitle" name="orderTitle" required>
+          <label for="orderStatus">Status:</label>
+          <input type="text" id="orderStatus" name="orderStatus" required>
+          <label for="deadline">Deadline:</label>
+          <input type="date" id="deadline" name="deadline" required>
+          <button type="submit">Auftrag speichern</button>
+        </form>
+      </div>
     </div>
 
-    <script src="script.js"></script>
-    <script>
-        lucide.createIcons(); // Icons nach dem Laden des Scripts erstellen
-    </script>
+    <div id="transactions" class="page">
+      <h1>💳 Transaktionen</h1>
+      <div class="card" id="transactionList">Noch keine Transaktionen.</div>
+    </div>
+  </div>
 
-    <script>
-        // Überprüfen, ob der Nutzer eingeloggt ist
-        if (!localStorage.getItem("loggedIn")) {
-            window.location.href = "login.html"; // Weiterleitung zur Login-Seite, falls nicht eingeloggt
-        }
+  <script src="script.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
 
-        // Benutzerrolle prüfen und Anpassungen vornehmen
-        if (localStorage.getItem("role") === "admin") {
-            // Admin-spezifische Funktionen freischalten
-            document.getElementById("addOrderButton").style.display = "block"; // Admin kann Aufträge hinzufügen
-        } else {
-            // Mitarbeiter sehen nur die Logs
-            document.getElementById("addOrderButton").style.display = "none"; // Mitarbeiter können keine Aufträge hinzufügen
-        }
+  <script>
+    const apiUrl = "https://DEINE-BACKEND-URL.onrender.com"; // hier deine URL einfügen
 
-        // Funktion zum Ausloggen
-        function logout() {
-            localStorage.removeItem("loggedIn"); // Entfernen des Login-Status aus localStorage
-            localStorage.removeItem("role"); // Entfernen der Benutzerrolle
-            window.location.href = "login.html"; // Weiterleitung zur Login-Seite
-        }
+    if (!localStorage.getItem("loggedIn")) {
+      window.location.href = "login.html";
+    }
 
-        // Aufträge beim Laden der Seite abrufen
-        function loadOrders() {
-            fetch("http://localhost:3000/orders")
-                .then(response => response.json())
-                .then(data => {
-                    const ordersContainer = document.getElementById("orderList");
-                    ordersContainer.innerHTML = ""; // Vorherige Aufträge löschen
+    if (localStorage.getItem("role") === "admin") {
+      document.getElementById("addOrderButton").style.display = "block";
+    } else {
+      document.getElementById("addOrderButton").style.display = "none";
+    }
 
-                    data.forEach(order => {
-                        const orderElement = document.createElement("div");
-                        orderElement.classList.add("order");
-                        orderElement.innerHTML = `
-                            <h3>${order.orderTitle}</h3>
-                            <p>Kunde: ${order.customerName}</p>
-                            <p>Status: ${order.orderStatus}</p>
-                            <p>Deadline: ${order.deadline}</p>
-                        `;
-                        ordersContainer.appendChild(orderElement);
-                    });
-                })
-                .catch(error => console.log("Fehler beim Abrufen der Aufträge:", error));
-        }
+    function logout() {
+      localStorage.removeItem("loggedIn");
+      localStorage.removeItem("role");
+      window.location.href = "login.html";
+    }
 
-        // Formular für Auftrag anzeigen
-        document.getElementById("addOrderButton").addEventListener("click", function() {
-            document.getElementById("addOrderForm").style.display = "block";
-        });
+    function loadOrders() {
+      fetch(`${apiUrl}/orders`)
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById("orderList");
+          container.innerHTML = "";
+          data.forEach(order => {
+            const el = document.createElement("div");
+            el.classList.add("order");
+            el.innerHTML = `
+              <h3>${order.orderTitle}</h3>
+              <p>Kunde: ${order.customerName}</p>
+              <p>Status: ${order.orderStatus}</p>
+              <p>Deadline: ${order.deadline}</p>
+            `;
+            container.appendChild(el);
+          });
+        })
+        .catch(err => console.log("Fehler beim Laden der Aufträge:", err));
+    }
 
-        // Formular-Submit-Handler
-        document.getElementById("orderForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            addOrder();
-        });
+    document.getElementById("addOrderButton").addEventListener("click", function () {
+      document.getElementById("addOrderForm").style.display = "block";
+    });
 
-        // Auftrag hinzufügen
-        function addOrder() {
-            const customerName = document.getElementById("customerName").value;
-            const orderTitle = document.getElementById("orderTitle").value;
-            const orderStatus = document.getElementById("orderStatus").value;
-            const deadline = document.getElementById("deadline").value;
+    document.getElementById("orderForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      addOrder();
+    });
 
-            const newOrder = {
-                customerName,
-                orderTitle,
-                orderStatus,
-                deadline
-            };
+    function addOrder() {
+      const newOrder = {
+        customerName: document.getElementById("customerName").value,
+        orderTitle: document.getElementById("orderTitle").value,
+        orderStatus: document.getElementById("orderStatus").value,
+        deadline: document.getElementById("deadline").value
+      };
 
-            fetch("http://localhost:3000/orders", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(newOrder)
-            })
-            .then(response => response.json())
-            .then(data => {
-                loadOrders(); // Aufträge neu laden
-                document.getElementById("addOrderForm").style.display = "none"; // Formular ausblenden
-                document.getElementById("orderForm").reset(); // Formular zurücksetzen
-            })
-            .catch(error => console.log("Fehler beim Hinzufügen des Auftrags:", error));
-        }
+      fetch(`${apiUrl}/orders`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newOrder)
+      })
+        .then(res => res.json())
+        .then(() => {
+          loadOrders();
+          document.getElementById("addOrderForm").style.display = "none";
+          document.getElementById("orderForm").reset();
+        })
+        .catch(err => console.log("Fehler beim Hinzufügen:", err));
+    }
 
-        // Beim Laden der Seite Aufträge laden
-        window.onload = function() {
-        loadOrders();
-        }
-    </script>
+    function showPage(pageId) {
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      document.getElementById(pageId).classList.add("active");
+    }
+
+    window.onload = loadOrders;
+  </script>
 </body>
-
 </html>
