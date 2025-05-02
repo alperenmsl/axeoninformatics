@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
+</head>
+
+<body class="login-body">
+    <div class="login-container">
+        <h2>🔐 Admin Login</h2>
+        <form onsubmit="return login(event)">
+            <input type="text" id="username" placeholder="Benutzername" required />
+            <input type="password" id="password" placeholder="Passwort" required />
+            <button type="submit">Einloggen</button>
+            <p id="error" class="error-msg"></p>
+        </form>
+    </div>
+
+    <script>
+    function login(e) {
+    e.preventDefault();
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+    const error = document.getElementById("error");
+
+    // Benutzer aus der DB laden (Simulation aus db.json)
+    fetch("http://localhost:3000/users")
+        .then(response => response.json())
+        .then(users => {
+            const foundUser = users.find(u => u.username === user && u.password === pass);
+            if (foundUser) {
+                // Speichern des Login-Status und der Rolle im localStorage
+                localStorage.setItem("loggedIn", "true");
+                localStorage.setItem("role", foundUser.role);  // Speichern der Rolle
+                window.location.href = "admin.html";
+            } else {
+                error.textContent = "❌ Falscher Benutzername oder Passwort";
+            }
+        })
+        .catch(error => console.log("Fehler beim Abrufen der Benutzer:", error));
+    }
+
+    </script>
+
+</body>
+
+</html>

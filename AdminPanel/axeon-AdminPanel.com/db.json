@@ -1,0 +1,58 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin123",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "username": "alperen",
+      "password": "test",
+      "role": "user"
+    },
+    {
+      "id": "3",
+      "username": "test",
+      "password": "123",
+      "role": "user"
+    },
+    {
+      "id": "4",
+      "username": "user",
+      "password": "user",
+      "role": "user"
+    }
+  ],
+  "orders": [
+    {
+      "id": "1",
+      "customerName": "Max Mustermann",
+      "orderTitle": "Website Design",
+      "orderStatus": "In Bearbeitung",
+      "deadline": "2025-05-01"
+    },
+    {
+      "id": "2",
+      "customerName": "Anna Meier",
+      "orderTitle": "App Entwicklung",
+      "orderStatus": "Abgeschlossen",
+      "deadline": "2025-04-20"
+    },
+    {
+      "id": "ef6c",
+      "customerName": "Ashleys",
+      "orderTitle": "Website ",
+      "orderStatus": "In Bearbeitung",
+      "deadline": "2025-08-22"
+    },
+    {
+      "id": "3e9c",
+      "customerName": "Test Webpage",
+      "orderTitle": "Website ",
+      "orderStatus": "In Bearbeitung",
+      "deadline": "2025-08-14"
+    }
+  ]
+}

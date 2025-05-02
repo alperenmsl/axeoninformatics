@@ -1,0 +1,188 @@
+:root {
+    --bg: #211e1e;
+    --sidebar: #242629;
+    --primary: #d5b607;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --card-bg: rgba(30, 41, 59, 0.6);
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Fira Code', monospace;
+    display: flex;
+    height: 100vh;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+.sidebar {
+    width: 240px;
+    background-color: var(--sidebar);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.sidebar h2 {
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 10px;
+    border-radius: var(--radius);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.sidebar li:hover {
+    background-color: var(--primary);
+    color: #000;
+}
+
+.main {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.01);
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.status {
+    font-weight: bold;
+}
+
+.status.online {
+    color: #10b981;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+    .main {
+        padding: 20px;
+    }
+}
+
+/* For Login Page  */
+
+.login-body {
+    background-color: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Fira Code', monospace;
+}
+
+.login-container {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    width: 300px;
+    text-align: center;
+}
+
+.login-container h2 {
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: var(--radius);
+    background-color: #1e1e1e;
+    color: var(--text);
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary);
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.login-container button:hover {
+    background-color: #facc15;
+}
+
+.error-msg {
+    color: red;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+#addOrderButton {
+    background-color: #facc15; /* Grüner Hintergrund */
+    color: white; /* Weiße Schrift */
+    padding: 10px 20px; /* Mehr Innenabstand */
+    font-size: 16px; /* Größere Schrift */
+    border: none; /* Kein Rand */
+    border-radius: 5px; /* Abgerundete Ecken */
+    cursor: pointer; /* Mauszeiger ändern, wenn über den Button */
+    transition: background-color 0.3s; /* Sanfte Farbänderung beim Hover */
+}
+
+#addOrderButton:hover {
+    background-color: #c8a413; /* Etwas dunklerer Grünton beim Hover */
+}
